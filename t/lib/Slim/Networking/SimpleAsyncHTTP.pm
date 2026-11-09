@@ -11,5 +11,6 @@ sub code { $_[0]{code} }
 sub content { $_[0]{content} }
 sub params { $_[0]{params} }
 sub respond { my ($s,$content,$code)=@_; $s->{content}=$content; $s->{code}=$code||200; $s->{cb}->($s) }
-sub fail { my ($s,$code,$content,$err)=@_; $s->{code}=$code; $s->{content}=$content; $s->{ecb}->($s,$err||"HTTP $code") }
+# mimics real LMS: code/content not set on 4xx/5xx, error string starts with status
+sub fail { my ($s,$err)=@_; $s->{ecb}->($s,$err) }
 1;

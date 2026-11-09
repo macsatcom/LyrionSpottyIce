@@ -37,8 +37,8 @@ sub _token {
 }
 
 sub get {
-	my ($class, $path, $cb, $ecb) = @_;
-	$class->_request('GET', $path, undef, $cb, $ecb);
+	my ($class, $path, $cb, $ecb, $timeout) = @_;
+	$class->_request('GET', $path, undef, $cb, $ecb, $timeout);
 }
 
 sub post {
@@ -47,7 +47,7 @@ sub post {
 }
 
 sub _request {
-	my ($class, $method, $path, $body, $cb, $ecb) = @_;
+	my ($class, $method, $path, $body, $cb, $ecb, $timeout) = @_;
 	$cb  ||= sub {};
 	$ecb ||= sub {};
 
@@ -79,7 +79,7 @@ sub _request {
 			my ($http, $error) = @_;
 			$ecb->(_errorMessage($http, $error, $url));
 		},
-		{ timeout => TIMEOUT },
+		{ timeout => $timeout || TIMEOUT },
 	);
 
 	if ($method eq 'POST') {
@@ -92,32 +92,24 @@ sub _request {
 
 sub _errorMessage {
 	my ($http, $error, $url) = @_;
-	my $code = eval { $http->code } || 0;
+	# LMS SimpleAsyncHTTP passes e.g. "401 Unauthorized" and does not set code/content
+	my ($code) = (defined $error ? $error : '') =~ /^(\d{3})\b/;
+	$code ||= eval { $http->code } || 0;
 	$log->warn("Request failed ($url): " . ($error || '') . ($code ? " [$code]" : ''));
 
 	return string('PLUGIN_SPOTTYICE_ERR_401') if $code == 401;
 	return string('PLUGIN_SPOTTYICE_ERR_409') if $code == 409;
-
-	my $content = eval { $http->content };
-	if (defined $content && length $content) {
-		my $data = eval { decode_json($content) };
-		if (ref $data eq 'HASH' && defined $data->{detail}) {
-			my $d = $data->{detail};
-			return ref $d ? encode_json($d) : $d;
-		}
-	}
 	return string('PLUGIN_SPOTTYICE_ERR_GENERIC') . (defined $error && length $error ? ": $error" : '');
 }
 
 sub status {
-	my ($class, $cb, $ecb) = @_;
+	my ($class, $cb, $ecb, $timeout) = @_;
 	$class->get('/status', sub {
 		$STATUS = shift;
 		$STATUS_TS = time();
 		$cb->($STATUS) if $cb;
-	}, $ecb);
+	}, $ecb, $timeout);
 }
-
 sub cachedStatus { wantarray ? ($STATUS, $STATUS_TS) : $STATUS }
 
 sub now {
@@ -164,8 +156,7 @@ sub queue {
 }
 
 sub itemPath {
-	shift if @_ > 1 || (defined $_[0] && $_[0] eq __PACKAGE__);  # class or function call
-	my $uri = shift;
+	my ($class, $uri) = @_;
 	return '/item/' . uri_escape_utf8($uri, '^A-Za-z0-9\-\._~:');
 }
 

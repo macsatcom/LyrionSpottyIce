@@ -20,14 +20,8 @@ sub handler {
 	if ($params->{saveSettings} && defined $params->{pref_api_url}) {
 		$params->{pref_api_url} =~ s/^\s+|\s+$//g;
 		$params->{pref_api_url} =~ s{/+$}{};
-	}
-
-	# apply new values now so the status check uses them; the base class
-	# handler (called when rendering) persists them as usual
-	if ($params->{saveSettings}) {
-		for my $p (qw(api_url token stream_override)) {
-			$prefs->set($p, $params->{"pref_$p"}) if defined $params->{"pref_$p"};
-		}
+		# so the status probe below targets the new URL; base handler persists all prefs
+		$prefs->set('api_url', $params->{pref_api_url});
 	}
 
 	my $done = sub {
@@ -52,6 +46,7 @@ sub handler {
 			$params->{status_error} = shift;
 			$done->();
 		},
+		5,
 	);
 
 	return undef;

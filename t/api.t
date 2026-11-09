@@ -52,15 +52,20 @@ is_deeply($data, {}, 'empty body -> {}');
 $API->resume; is($H->last->{body}, '{}', 'resume {}');
 
 # error mapping
-my %cases = (401 => [undef, 'PLUGIN_SPOTTYICE_ERR_401'], 409 => ['{"detail":"x"}', 'PLUGIN_SPOTTYICE_ERR_409'],
-	422 => ['{"detail":"bad uri"}', 'bad uri'], 500 => ['oops', 'PLUGIN_SPOTTYICE_ERR_GENERIC: boom']);
+my %cases = ('401 Unauthorized' => 'PLUGIN_SPOTTYICE_ERR_401', '409 Conflict' => 'PLUGIN_SPOTTYICE_ERR_409',
+	'422 Unprocessable Entity' => 'PLUGIN_SPOTTYICE_ERR_GENERIC: 422 Unprocessable Entity',
+	'500 Internal Server Error' => 'PLUGIN_SPOTTYICE_ERR_GENERIC: 500 Internal Server Error',
+	'Connect timed out' => 'PLUGIN_SPOTTYICE_ERR_GENERIC: Connect timed out');
 for my $c (sort keys %cases) {
 	my $e; $API->pause(sub { fail('cb') }, sub { $e = shift });
-	$H->last->fail($c, $cases{$c}[0], 'boom');
-	is($e, $cases{$c}[1], "error $c");
+	$H->last->fail($c);
+	is($e, $cases{$c}, "error $c");
 }
+$API->status(undef, undef, 5);
+is($H->last->params->{timeout}, 5, 'custom timeout');
+$API->now;
+is($H->last->params->{timeout}, 15, 'default timeout');
 my $e; $API->get('/now', sub { fail('cb') }, sub { $e = shift });
 $H->last->respond('not json');
 like($e, qr/ERR_GENERIC/, 'bad json');
-is(Plugins::SpottyIce::API::itemPath('spotify:x:1'), '/item/spotify:x:1', 'function call');
 done_testing;
