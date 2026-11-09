@@ -40,27 +40,27 @@ jobs:
           VERSION="${TAG#v}"
           sed -i "s:<version>.*</version>:<version>${VERSION}</version>:" SpottyIce/install.xml
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
-          echo "ZIP=SpottyIce-${VERSION}.zip" >> "$GITHUB_ENV"
+          echo "ZIPNAME=SpottyIce-${VERSION}.zip" >> "$GITHUB_ENV"
 
       - name: Build zip (install.xml at zip root, as LMS expects)
         run: |
           OUT="$GITHUB_WORKSPACE/dist"
           mkdir -p "$OUT"
           cd src/SpottyIce
-          zip -r "$OUT/$ZIP" . -x '*.DS_Store'
+          zip -r "$OUT/$ZIPNAME" . -x '*.DS_Store'
           cd "$OUT"
           ls -l
-          SHA=$(sha1sum "$ZIP" | cut -d' ' -f1)
-          echo "$SHA  $ZIP" > "$ZIP.sha1"
+          SHA=$(sha1sum "$ZIPNAME" | cut -d' ' -f1)
+          echo "$SHA  $ZIPNAME" > "$ZIPNAME.sha1"
           echo "SHA=$SHA" >> "$GITHUB_ENV"
-          unzip -Z1 "$ZIP" > files.txt
+          unzip -Z1 "$ZIPNAME" > files.txt
           grep -x install.xml files.txt
 
       - name: Upload release asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: dist
-        run: gh release upload "$TAG" "$ZIP" "$ZIP.sha1" --clobber -R "$GITHUB_REPOSITORY"
+        run: gh release upload "$TAG" "$ZIPNAME" "$ZIPNAME.sha1" --clobber -R "$GITHUB_REPOSITORY"
 
       - name: Check whether this is the latest release
         env:
@@ -79,7 +79,7 @@ jobs:
         if: env.IS_LATEST == 'true'
         working-directory: main
         run: |
-          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${ZIP}"
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${ZIPNAME}"
           sh scripts/make-repo-xml.sh "$VERSION" "$SHA" "$URL" > repo.xml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
