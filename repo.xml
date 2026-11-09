@@ -4,7 +4,7 @@
 		<title lang="EN">Spotty Ice plugin repository</title>
 	</details>
 	<plugins>
-		<plugin name="SpottyIce" version="0.9" minTarget="8.0" maxTarget="*">
+		<plugin name="SpottyIce" version="0.9.1" minTarget="8.0" maxTarget="*">
 			<title lang="EN">Spotty Ice</title>
 			<title lang="DA">Spotty Ice</title>
 			<desc lang="EN">Browse and play Spotify via a Spotify_Soloist_Icecast container.</desc>
@@ -13,8 +13,8 @@
 			<category>musicservices</category>
 			<link>https://github.com/macsatcom/LyrionSpottyIce</link>
 			<icon>https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/SpottyIce/HTML/EN/plugins/SpottyIce/html/images/icon.png</icon>
-			<url>https://github.com/macsatcom/LyrionSpottyIce/releases/download/v0.9/SpottyIce-0.9.zip</url>
-			<sha>e482eecc41006f1e6becf499f21cf6212e42182c</sha>
+			<url>https://github.com/macsatcom/LyrionSpottyIce/releases/download/v0.9.1/SpottyIce-0.9.1.zip</url>
+			<sha>95a3e0ff413561ef47c2b1e107dfae70ef1702f7</sha>
 		</plugin>
 	</plugins>
 </extensions>
