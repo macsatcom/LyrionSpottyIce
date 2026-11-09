@@ -44,15 +44,22 @@ jobs:
 
       - name: Build zip (install.xml at zip root, as LMS expects)
         run: |
-          (cd src/SpottyIce && zip -qr "$GITHUB_WORKSPACE/$ZIP" . -x '*.DS_Store')
+          OUT="$GITHUB_WORKSPACE/dist"
+          mkdir -p "$OUT"
+          cd src/SpottyIce
+          zip -r "$OUT/$ZIP" . -x '*.DS_Store'
+          cd "$OUT"
+          ls -l
           SHA=$(sha1sum "$ZIP" | cut -d' ' -f1)
           echo "$SHA  $ZIP" > "$ZIP.sha1"
           echo "SHA=$SHA" >> "$GITHUB_ENV"
-          unzip -l "$ZIP" | grep -q ' install.xml$'
+          unzip -Z1 "$ZIP" > files.txt
+          grep -x install.xml files.txt
 
       - name: Upload release asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: dist
         run: gh release upload "$TAG" "$ZIP" "$ZIP.sha1" --clobber -R "$GITHUB_REPOSITORY"
 
       - name: Check whether this is the latest release
