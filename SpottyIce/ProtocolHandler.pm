@@ -18,7 +18,7 @@ use Plugins::SpottyIce::API;
 use Plugins::SpottyIce::Entity;
 
 use constant POLL_INTERVAL => 2;
-use constant ICON => 'plugins/SpottyIce/html/images/icon.png';
+use constant ICON => 'plugins/SpottyIce/html/images/spottyice_svg.png';
 
 my $log = logger('plugin.spottyice');
 my $API = 'Plugins::SpottyIce::API';

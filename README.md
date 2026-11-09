@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="SpottyIce/HTML/EN/plugins/SpottyIce/html/images/spottyice.svg" alt="Spotty Ice logo" width="160">
+</p>
+
 # Spotty Ice
 
 Lyrion Music Server (LMS 8+) plugin for

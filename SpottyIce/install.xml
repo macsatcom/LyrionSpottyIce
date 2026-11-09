@@ -3,7 +3,8 @@
 	<id>7e02db4d-350e-4609-b2d2-1c36ca1ebc35</id>
 	<name>PLUGIN_SPOTTYICE</name>
 	<module>Plugins::SpottyIce::Plugin</module>
-	<version>0.9.1</version>
+	<version>0.9.2</version>
+	<icon>plugins/SpottyIce/html/images/spottyice_svg.png</icon>
 	<description>PLUGIN_SPOTTYICE_DESC</description>
 	<creator>Spotty Ice</creator>
 	<defaultState>enabled</defaultState>

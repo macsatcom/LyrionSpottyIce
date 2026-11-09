@@ -18,7 +18,7 @@ cat <<EOF
 			<creator>macsatcom</creator>
 			<category>musicservices</category>
 			<link>${REPO}</link>
-			<icon>https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/SpottyIce/HTML/EN/plugins/SpottyIce/html/images/icon.png</icon>
+			<icon>https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/SpottyIce/HTML/EN/plugins/SpottyIce/html/images/spottyice_svg.png</icon>
 			<url>${URL}</url>
 			<sha>${SHA}</sha>
 		</plugin>
