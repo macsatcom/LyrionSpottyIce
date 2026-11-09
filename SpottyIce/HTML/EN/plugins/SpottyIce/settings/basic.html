@@ -1,0 +1,31 @@
+[% PROCESS settings/header.html %]
+
+	[% WRAPPER setting title="PLUGIN_SPOTTYICE_API_URL" desc="PLUGIN_SPOTTYICE_API_URL_DESC" %]
+		<input type="text" class="stdedit" name="pref_api_url" id="api_url" value="[% prefs.pref_api_url | html %]" size="50">
+	[% END %]
+
+	[% WRAPPER setting title="PLUGIN_SPOTTYICE_TOKEN" desc="PLUGIN_SPOTTYICE_TOKEN_DESC" %]
+		<input type="password" class="stdedit" name="pref_token" id="token" value="[% prefs.pref_token | html %]" size="50" autocomplete="off">
+	[% END %]
+
+	[% WRAPPER setting title="PLUGIN_SPOTTYICE_STREAM_OVERRIDE" desc="PLUGIN_SPOTTYICE_STREAM_OVERRIDE_DESC" %]
+		<input type="text" class="stdedit" name="pref_stream_override" id="stream_override" value="[% prefs.pref_stream_override | html %]" size="50">
+	[% END %]
+
+	[% WRAPPER setting title="PLUGIN_SPOTTYICE_CONNECTION" desc="" %]
+		[% IF status_error %]
+			<span style="color:#c00">[% status_error | html %]</span>
+		[% ELSIF status %]
+			[% IF status.soloist.logged_in %]
+				[% "PLUGIN_SPOTTYICE_LOGGED_IN" | string %]
+			[% ELSE %]
+				[% "PLUGIN_SPOTTYICE_NOT_LOGGED_IN" | string %]
+			[% END %]
+			[% IF status.soloist.device_name %]<br>[% "PLUGIN_SPOTTYICE_DEVICE" | string %]: [% status.soloist.device_name | html %][% END %]
+			[% IF status.days_left_rounded.defined %]<br>[% "PLUGIN_SPOTTYICE_DAYS_LEFT" | string %]: [% status.days_left_rounded %][% END %]
+		[% ELSE %]
+			[% "PLUGIN_SPOTTYICE_NOT_CONNECTED" | string %]
+		[% END %]
+	[% END %]
+
+[% PROCESS settings/footer.html %]
