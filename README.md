@@ -7,9 +7,12 @@ container's Icecast stream.
 
 ## Install
 
-1. `make zip` (runs tests, builds `SpottyIce-<version>.zip`).
-2. Unzip into the LMS plugin folder (e.g. `/var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/`
-   or `<prefs>/Plugins/`) so you get `.../Plugins/SpottyIce/install.xml`, then restart LMS.
+1. In LMS: *Settings → Manage Plugins*, add this repository URL at the bottom and apply:
+
+   `https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/repo.xml`
+
+2. Enable *Spotty Ice* in the plugin list, apply and restart LMS when asked. Updates are
+   offered automatically when a new release is published.
 3. *Settings → Plugins → Spotty Ice*: set the API URL (e.g. `http://192.168.1.75:8380`) and,
    if *Require API token* is enabled in the container, the token. The page shows the
    connection status (logged in, device, days left).
@@ -39,5 +42,6 @@ One container = one Spotify device = one stream; players on the same container h
 
 Publishing a GitHub release (tag `vX.Y`) triggers `.github/workflows/release.yml`: it runs
 the tests, sets `install.xml` version from the tag, and attaches `SpottyIce-X.Y.zip` (+ `.sha1`)
-as a release asset. Download counts are visible via
+as a release asset, and (for the latest release) regenerates `repo.xml` on `master`
+with the asset URL and SHA1, so LMS offers the update. Download counts are visible via
 `gh release view vX.Y --json assets`. A release can be rebuilt with *Run workflow* (tag input).

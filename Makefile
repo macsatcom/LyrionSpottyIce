@@ -7,7 +7,7 @@ test:
 
 zip: test
 	rm -f SpottyIce-$(VERSION).zip
-	zip -qr SpottyIce-$(VERSION).zip SpottyIce -x '*.DS_Store'
+	cd SpottyIce && zip -qr ../SpottyIce-$(VERSION).zip . -x '*.DS_Store'
 	@echo "Built SpottyIce-$(VERSION).zip"
 
 clean:
