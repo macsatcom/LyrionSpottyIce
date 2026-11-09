@@ -6,7 +6,7 @@
 	<version>0.9.2</version>
 	<icon>plugins/SpottyIce/html/images/spottyice_svg.png</icon>
 	<description>PLUGIN_SPOTTYICE_DESC</description>
-	<creator>Spotty Ice</creator>
+	<creator>Kasper S Nielsen</creator>
 	<defaultState>enabled</defaultState>
 	<optionsURL>plugins/SpottyIce/settings/basic.html</optionsURL>
 	<category>musicservices</category>

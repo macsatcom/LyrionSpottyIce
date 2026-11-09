@@ -15,7 +15,7 @@ cat <<EOF
 			<title lang="DA">Spotty Ice</title>
 			<desc lang="EN">Browse and play Spotify via a Spotify_Soloist_Icecast container.</desc>
 			<desc lang="DA">Gennemse og afspil Spotify via en Spotify_Soloist_Icecast-container.</desc>
-			<creator>macsatcom</creator>
+			<creator>Kasper S Nielsen</creator>
 			<category>musicservices</category>
 			<link>${REPO}</link>
 			<icon>https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/SpottyIce/HTML/EN/plugins/SpottyIce/html/images/spottyice_svg.png</icon>
