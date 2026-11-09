@@ -19,6 +19,7 @@ my $prefs = preferences('plugin.spottyice');
 $P->initPlugin;
 is($Slim::Plugin::OPMLBased::ARGS{tag}, 'spottyice', 'tag');
 is($Slim::Player::ProtocolHandlers::HANDLERS{spottyice}, 'Plugins::SpottyIce::ProtocolHandler', 'handler');
+is_deeply($Slim::Control::Request::SUBS[0][1], [['pause', 'play', 'stop']], 'transport subscribe');
 
 my $res; my $cb = sub { $res = shift };
 Plugins::SpottyIce::Plugin::handleFeed(undef, $cb, {});

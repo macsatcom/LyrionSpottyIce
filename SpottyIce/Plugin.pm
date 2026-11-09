@@ -6,6 +6,7 @@ use base qw(Slim::Plugin::OPMLBased);
 
 use URI::Escape qw(uri_escape_utf8);
 
+use Slim::Control::Request;
 use Slim::Player::ProtocolHandlers;
 use Slim::Utils::Log;
 use Slim::Utils::Prefs;
@@ -34,6 +35,8 @@ sub initPlugin {
 
 	Slim::Player::ProtocolHandlers->registerHandler(spottyice => 'Plugins::SpottyIce::ProtocolHandler');
 
+	Slim::Control::Request::subscribe(\&Plugins::SpottyIce::ProtocolHandler::onCommand, [['pause', 'play', 'stop']]);
+
 	$class->SUPER::initPlugin(
 		feed   => \&handleFeed,
 		tag    => 'spottyice',
@@ -46,6 +49,8 @@ sub initPlugin {
 sub getDisplayName { 'PLUGIN_SPOTTYICE' }
 
 sub playerMenu { undef }
+
+sub getIcon { Plugins::SpottyIce::ProtocolHandler->getIcon }
 
 sub _text { { items => [{ name => $_[0], type => 'text' }] } }
 
