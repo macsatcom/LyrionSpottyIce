@@ -1,0 +1,152 @@
+PLUGIN_SPOTTYICE
+	EN	Spotty Ice
+	DA	Spotty Ice
+
+PLUGIN_SPOTTYICE_DESC
+	EN	Play Spotify via a Spotty Ice container (Soloist + Icecast stream).
+	DA	Afspil Spotify via en Spotty Ice-container (Soloist + Icecast-stream).
+
+PLUGIN_SPOTTYICE_SEARCH
+	EN	Search
+	DA	Søg
+
+PLUGIN_SPOTTYICE_SEARCH_TRACKS
+	EN	Search Tracks
+	DA	Søg numre
+
+PLUGIN_SPOTTYICE_SEARCH_ALBUMS
+	EN	Search Albums
+	DA	Søg albums
+
+PLUGIN_SPOTTYICE_SEARCH_ARTISTS
+	EN	Search Artists
+	DA	Søg kunstnere
+
+PLUGIN_SPOTTYICE_SEARCH_PLAYLISTS
+	EN	Search Playlists
+	DA	Søg playlister
+
+PLUGIN_SPOTTYICE_SEARCH_PODCASTS
+	EN	Search Podcasts
+	DA	Søg podcasts
+
+PLUGIN_SPOTTYICE_PLAYLISTS
+	EN	Playlists
+	DA	Playlister
+
+PLUGIN_SPOTTYICE_ALBUMS
+	EN	Albums
+	DA	Albums
+
+PLUGIN_SPOTTYICE_LIKED
+	EN	Liked Songs
+	DA	Likede sange
+
+PLUGIN_SPOTTYICE_ARTISTS
+	EN	Artists
+	DA	Kunstnere
+
+PLUGIN_SPOTTYICE_PODCASTS
+	EN	Podcasts
+	DA	Podcasts
+
+PLUGIN_SPOTTYICE_RECENT
+	EN	Recently Played
+	DA	Senest afspillet
+
+PLUGIN_SPOTTYICE_NOW_PLAYING
+	EN	Now Playing
+	DA	Spiller nu
+
+PLUGIN_SPOTTYICE_TOP_TRACKS
+	EN	Top Tracks
+	DA	Topnumre
+
+PLUGIN_SPOTTYICE_MORE
+	EN	More…
+	DA	Mere…
+
+PLUGIN_SPOTTYICE_ADD_TO_QUEUE
+	EN	Add to Spotify queue
+	DA	Føj til Spotify-kø
+
+PLUGIN_SPOTTYICE_QUEUED
+	EN	Added to Spotify queue
+	DA	Føjet til Spotify-kø
+
+PLUGIN_SPOTTYICE_NOTHING_PLAYING
+	EN	Nothing is playing
+	DA	Intet afspilles
+
+PLUGIN_SPOTTYICE_NO_RESULTS
+	EN	No results
+	DA	Ingen resultater
+
+PLUGIN_SPOTTYICE_API_URL
+	EN	Container URL
+	DA	Container-URL
+
+PLUGIN_SPOTTYICE_API_URL_DESC
+	EN	Base URL of the Spotty Ice container, e.g. http://192.168.1.75:8380
+	DA	Basis-URL for Spotty Ice-containeren, f.eks. http://192.168.1.75:8380
+
+PLUGIN_SPOTTYICE_TOKEN
+	EN	API token
+	DA	API-token
+
+PLUGIN_SPOTTYICE_TOKEN_DESC
+	EN	Optional API token configured in the container.
+	DA	Valgfri API-token konfigureret i containeren.
+
+PLUGIN_SPOTTYICE_STREAM_OVERRIDE
+	EN	Stream URL override
+	DA	Tilsidesæt stream-URL
+
+PLUGIN_SPOTTYICE_STREAM_OVERRIDE_DESC
+	EN	Optional. Leave empty to use the stream URL reported by the container.
+	DA	Valgfri. Lad være tom for at bruge stream-URL'en fra containeren.
+
+PLUGIN_SPOTTYICE_CONNECTION
+	EN	Connection
+	DA	Forbindelse
+
+PLUGIN_SPOTTYICE_LOGGED_IN
+	EN	Logged in
+	DA	Logget ind
+
+PLUGIN_SPOTTYICE_NOT_LOGGED_IN
+	EN	Not logged in
+	DA	Ikke logget ind
+
+PLUGIN_SPOTTYICE_DEVICE
+	EN	Device
+	DA	Enhed
+
+PLUGIN_SPOTTYICE_DAYS_LEFT
+	EN	Days until update required
+	DA	Dage til opdatering kræves
+
+PLUGIN_SPOTTYICE_NOT_CONNECTED
+	EN	Not connected
+	DA	Ikke forbundet
+
+PLUGIN_SPOTTYICE_ERR_401
+	EN	API token missing or wrong
+	DA	API-token mangler eller er forkert
+
+PLUGIN_SPOTTYICE_ERR_409
+	EN	Soloist is not running or not logged in – select the device in the Spotify app
+	DA	Soloist kører ikke eller er ikke logget ind – vælg enheden i Spotify-appen
+
+PLUGIN_SPOTTYICE_ERR_WEBAPI
+	EN	Spotify Web API not connected – connect it in the container's Browse tab
+	DA	Spotify Web API er ikke forbundet – forbind den under fanen Browse i containeren
+
+PLUGIN_SPOTTYICE_ERR_GENERIC
+	EN	Spotty Ice request failed
+	DA	Spotty Ice-forespørgsel mislykkedes
+
+PLUGIN_SPOTTYICE_NOT_CONFIGURED
+	EN	Spotty Ice is not configured – set the container URL in the plugin settings
+	DA	Spotty Ice er ikke konfigureret – angiv container-URL i plugin-indstillingerne
+
