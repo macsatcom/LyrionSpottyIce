@@ -34,3 +34,10 @@ One container = one Spotify device = one stream; players on the same container h
 ## Development
 
 `make test` runs the test suite against minimal LMS stubs in `t/lib/` (no LMS needed).
+
+## Releases
+
+Publishing a GitHub release (tag `vX.Y`) triggers `.github/workflows/release.yml`: it runs
+the tests, sets `install.xml` version from the tag, and attaches `SpottyIce-X.Y.zip` (+ `.sha1`)
+as a release asset. Download counts are visible via
+`gh release view vX.Y --json assets`. A release can be rebuilt with *Run workflow* (tag input).
