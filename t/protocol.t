@@ -17,7 +17,7 @@ preferences('plugin.spottyice')->set(api_url => 'http://h');
 
 package FakeTrack; sub new { bless { url => $_[1] }, $_[0] } sub url { $_[0]{url} }
 package FakeSong;  sub new { bless { track => FakeTrack->new($_[1]) }, $_[0] }
-sub track { $_[0]{track} } sub streamUrl { my $s = shift; $s->{su} = shift if @_; $s->{su} }
+sub track { $_[0]{track} } sub currentTrack { $_[0]{track} } sub streamUrl { my $s = shift; $s->{su} = shift if @_; $s->{su} }
 package FakeClient; sub new { bless { song => $_[1], paused => 0, playing => 1 }, $_[0] }
 sub playingSong { $_[0]{song} } sub isPaused { $_[0]{paused} } sub isPlaying { $_[0]{playing} }
 package main;
@@ -25,6 +25,15 @@ package main;
 is($PH->uriFromUrl('spottyice://spotify:track:1'), 'spotify:track:1', 'uriFromUrl');
 ok($PH->isRemote && !$PH->canSeek, 'remote, no seek');
 is($PH->contentType, 'mp3', 'default mp3');
+
+# scanUrl must not hand spottyice:// to the HTTP scanner
+{
+	my $s = FakeSong->new('spottyice://spotify:track:3K');
+	my ($track, $err);
+	$PH->scanUrl('spottyice://spotify:track:3K', { song => $s, cb => sub { ($track, $err) = @_ } });
+	is($track, $s->currentTrack, 'scanUrl returns current track');
+	ok(!$err, 'scanUrl: no error');
+}
 
 # getNextTrack
 my $song = FakeSong->new('spottyice://spotify:album:9');

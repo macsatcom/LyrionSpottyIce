@@ -53,6 +53,14 @@ sub _format {
 sub contentType     { _format() }
 sub getFormatForURL { _format() }
 
+# LMS scans remote URLs before playback; the inherited HTTP scanUrl would try to
+# fetch spottyice:// over HTTP. Nothing to scan: the real stream URL is resolved
+# in getNextTrack.
+sub scanUrl {
+	my ($class, $url, $args) = @_;
+	$args->{cb}->($args->{song}->currentTrack());
+}
+
 sub getNextTrack {
 	my ($class, $song, $successCb, $errorCb) = @_;
 	my $uri = $class->uriFromUrl($song->track->url);
