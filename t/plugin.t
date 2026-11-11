@@ -78,4 +78,12 @@ $H->last->respond('{"status":"playing","item":{"uri":"spotify:track:1","entity_t
 is($H->last->{url}, 'http://h/api/v1/queue?limit=10', 'queue fetch');
 $H->last->respond('{"upcoming":[{"uri":"spotify:track:2","entity_type":"track"}]}');
 is_deeply([map { $_->{name} } @{ $res->{items} }], ['Song', 'playing', 'spotify:track:2'], 'now playing');
+# Playing a container: playlist is a coderef yielding one spottyice:// audio item (never an HTTP-fetched string)
+{
+	my $it = Plugins::SpottyIce::Plugin::_mapPage(undef, { items => [{ uri => 'spotify:album:6y', entity_type => 'album', decorations => { identity => { name => 'Alb' } } }] })->[0];
+	is(ref $it->{playlist}, 'CODE', 'container playlist is a coderef');
+	my $got;
+	$it->{playlist}->(undef, sub { $got = shift }, {}, @{ $it->{passthrough} });
+	is_deeply($got->{items}, [{ name => 'Alb', type => 'audio', url => 'spottyice://spotify:album:6y' }], 'play container -> one spottyice item');
+}
 done_testing;

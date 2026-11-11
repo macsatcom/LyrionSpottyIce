@@ -46,7 +46,7 @@ sub isPlayable  { _type($_[0]) =~ /^(?:track|episode)$/ ? 1 : 0 }
 sub isContainer { _type($_[0]) =~ /^(?:album|playlist|artist|show)$/ ? 1 : 0 }
 
 sub toItem {
-	my ($e, $linkCb) = @_;
+	my ($e, $linkCb, $playCb) = @_;
 	my $uri = _h($e)->{uri};
 	return undef unless defined $uri && length $uri;
 	my $line2 = creators($e);
@@ -58,7 +58,7 @@ sub toItem {
 			on_select => 'play', playall => 1);
 	} elsif (isContainer($e)) {
 		%i = (name => name($e), line2 => $line2, image => cover($e), type => 'playlist',
-			url => $linkCb, passthrough => [{ uri => $uri }], playlist => "spottyice://$uri");
+			url => $linkCb, passthrough => [{ uri => $uri, name => name($e) }], playlist => $playCb);
 	} else {
 		return undef;
 	}

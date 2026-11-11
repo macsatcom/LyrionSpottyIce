@@ -20,11 +20,12 @@ ok !defined f('cover',{});
 is f('durationSecs',$tr),123; ok !defined f('durationSecs',{});
 ok f('isPlayable',$tr); ok !f('isPlayable',{entity_type=>'album'});
 ok f('isContainer',{entity_type=>'show'}); ok !f('isContainer',$tr);
-my $cb = sub {};
+my $cb = sub {}; my $pcb = sub {};
 is_deeply f('toItem',$tr,$cb), {name=>'Song',line1=>'Song',line2=>'A, B',image=>'l',type=>'audio',
   url=>'spottyice://spotify:track:1',duration=>123,on_select=>'play',playall=>1};
-is_deeply f('toItem',{uri=>'spotify:album:2',entity_type=>'album'},$cb),
-  {name=>'spotify:album:2',type=>'playlist',url=>$cb,passthrough=>[{uri=>'spotify:album:2'}],playlist=>'spottyice://spotify:album:2'};
+is_deeply f('toItem',{uri=>'spotify:album:2',entity_type=>'album'},$cb,$pcb),
+  {name=>'spotify:album:2',type=>'playlist',url=>$cb,passthrough=>[{uri=>'spotify:album:2',name=>'spotify:album:2'}],playlist=>$pcb};
+ok !exists f('toItem',{uri=>'spotify:album:2',entity_type=>'album'},$cb)->{playlist}, 'no playlist without play callback';
 is f('toItem',{uri=>'spotify:episode:3',entity_type=>'episode',decorations=>{parent=>{entity=>{decorations=>{identity=>{name=>'Show'}}}}}},$cb)->{line2},'Show';
 ok !defined f('toItem',{uri=>'x',entity_type=>'ad'},$cb);
 ok !defined f('toItem',{entity_type=>'track'},$cb);

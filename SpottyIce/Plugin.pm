@@ -85,7 +85,7 @@ sub handleFeed {
 sub _mapPage {
 	my ($client, $page, $moreItem) = @_;
 	$page = {} unless ref $page eq 'HASH';
-	my @items = grep { defined } map { $E->can('toItem')->($_, \&browseItem) } @{ ref $page->{items} eq 'ARRAY' ? $page->{items} : [] };
+	my @items = grep { defined } map { $E->can('toItem')->($_, \&browseItem, \&playContainer) } @{ ref $page->{items} eq 'ARRAY' ? $page->{items} : [] };
 	if ($page->{next} && $moreItem) {
 		my $offset = ($page->{offset} || 0) + ($page->{limit} || scalar(@{ $page->{items} || [] }) || 0);
 		push @items, $moreItem->($offset);
@@ -135,6 +135,16 @@ sub search {
 	}, sub { $cb->(_text(shift)) });
 }
 
+# Play/Add on an album, playlist, artist or show. LMS replaces the item's url with
+# its 'playlist' value and fetches it; a string would be fetched over HTTP, so this
+# callback returns the whole context as one spottyice:// item instead. The protocol
+# handler then starts the context on the container (POST /play {uri}).
+sub playContainer {
+	my ($client, $cb, $args, $params) = @_;
+	my $uri = $params->{uri};
+	$cb->({ items => [{ name => $params->{name} || $uri, type => 'audio', url => "spottyice://$uri" }] });
+}
+
 sub browseItem {
 	my ($client, $cb, $args, $params) = @_;
 	my $uri = $params->{uri};
@@ -146,7 +156,7 @@ sub browseItem {
 		my @items;
 
 		if ($type eq 'artist' && ref $data->{top_tracks} eq 'ARRAY' && @{ $data->{top_tracks} }) {
-			my @top = grep { defined } map { $E->can('toItem')->($_, \&browseItem) } @{ $data->{top_tracks} };
+			my @top = grep { defined } map { $E->can('toItem')->($_, \&browseItem, \&playContainer) } @{ $data->{top_tracks} };
 			push @items, { name => cstring($client, 'PLUGIN_SPOTTYICE_TOP_TRACKS'), type => 'playlist', items => \@top } if @top;
 		}
 
@@ -158,7 +168,7 @@ sub browseItem {
 				_more($client, \&_browseChildren, { uri => $uri, offset => $_[0] });
 			}) };
 		}
-		elsif (my $item = $E->can('toItem')->($data->{item}, \&browseItem)) {
+		elsif (my $item = $E->can('toItem')->($data->{item}, \&browseItem, \&playContainer)) {
 			push @items, $item;    # track/episode
 		}
 
@@ -200,7 +210,7 @@ sub nowPlaying {
 		$API->get('/queue?limit=10', sub {
 			my $q = shift;
 			my $up = ref $q eq 'HASH' ? $q->{upcoming} : undef;
-			push @items, grep { defined } map { $E->can('toItem')->($_, \&browseItem) } @{ ref $up eq 'ARRAY' ? $up : [] };
+			push @items, grep { defined } map { $E->can('toItem')->($_, \&browseItem, \&playContainer) } @{ ref $up eq 'ARRAY' ? $up : [] };
 			$cb->({ items => \@items });
 		}, sub { $cb->({ items => \@items }) });
 	}, sub { $cb->(_text(shift)) });
