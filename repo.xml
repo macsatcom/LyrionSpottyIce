@@ -14,7 +14,7 @@
 			<link>https://github.com/macsatcom/LyrionSpottyIce</link>
 			<icon>https://raw.githubusercontent.com/macsatcom/LyrionSpottyIce/master/SpottyIce/HTML/EN/plugins/SpottyIce/html/images/spottyice_svg.png</icon>
 			<url>https://github.com/macsatcom/LyrionSpottyIce/releases/download/v0.9.4/SpottyIce-0.9.4.zip</url>
-			<sha>a8907a3e0a7d34088cf04912548c449f13e3501a</sha>
+			<sha>8c5a0931ca511e1927a78a6613073f4e3c25ac4e</sha>
 		</plugin>
 	</plugins>
 </extensions>
