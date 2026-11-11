@@ -91,8 +91,13 @@ Debug logging: *Settings* → *Advanced* → *Logging*, set `plugin.spottyice` t
 
 ## How it works
 
-- Menus (*My Apps → Spotty Ice*): Search, Playlists, Albums, Liked songs, Artists,
-  Podcasts, Recently played, Now playing.
+- Menus (*My Apps → Spotty Ice*): Search (tracks, albums, artists, playlists, podcasts,
+  episodes), Playlists, Albums, Liked songs, Artists, Podcasts, Recently played, Top tracks,
+  Top artists, Play Spotify link (paste an `open.spotify.com/…` link or `spotify:` URI),
+  Now playing (current track and upcoming queue).
+- Every album, playlist, artist and podcast has a *Play* entry at the top. It also works
+  for playlists whose tracks Spotify won't list (playlists you don't own; a limit of
+  Spotify's development-mode Web API).
 - Items play as `spottyice://spotify:…`. The protocol handler calls `POST /play {uri}` and
   hands LMS the Icecast stream. A whole album/playlist plays inside that one live stream.
 - Now-playing metadata is polled from `/api/v1/now` every 2 s while playing.

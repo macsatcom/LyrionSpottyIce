@@ -65,18 +65,20 @@ sub handleFeed {
 		{ type => 'search', name => cstring($client, $str), url => \&search, passthrough => [{ type => $type }] }
 	} ([track => 'PLUGIN_SPOTTYICE_SEARCH_TRACKS'], [album => 'PLUGIN_SPOTTYICE_SEARCH_ALBUMS'],
 	   [artist => 'PLUGIN_SPOTTYICE_SEARCH_ARTISTS'], [playlist => 'PLUGIN_SPOTTYICE_SEARCH_PLAYLISTS'],
-	   [show => 'PLUGIN_SPOTTYICE_SEARCH_PODCASTS']);
+	   [show => 'PLUGIN_SPOTTYICE_SEARCH_PODCASTS'], [episode => 'PLUGIN_SPOTTYICE_SEARCH_EPISODES']);
 
 	my @lib = map {
 		my ($path, $str) = @$_;
 		{ type => 'link', name => cstring($client, $str), url => \&_browsePage, passthrough => [{ path => $path, offset => 0 }] }
 	} (['/library/playlists' => 'PLUGIN_SPOTTYICE_PLAYLISTS'], ['/library/albums' => 'PLUGIN_SPOTTYICE_ALBUMS'],
 	   ['/library/tracks' => 'PLUGIN_SPOTTYICE_LIKED'], ['/library/artists' => 'PLUGIN_SPOTTYICE_ARTISTS'],
-	   ['/library/shows' => 'PLUGIN_SPOTTYICE_PODCASTS'], ['/library/recent' => 'PLUGIN_SPOTTYICE_RECENT']);
+	   ['/library/shows' => 'PLUGIN_SPOTTYICE_PODCASTS'], ['/library/recent' => 'PLUGIN_SPOTTYICE_RECENT'],
+	   ['/library/top/tracks' => 'PLUGIN_SPOTTYICE_TOP_TRACKS'], ['/library/top/artists' => 'PLUGIN_SPOTTYICE_TOP_ARTISTS']);
 
 	$cb->({ items => [
 		{ type => 'link', name => cstring($client, 'PLUGIN_SPOTTYICE_SEARCH'), items => \@search },
 		@lib,
+		{ type => 'search', name => cstring($client, 'PLUGIN_SPOTTYICE_PLAY_LINK'), url => \&playLink },
 		{ type => 'link', name => cstring($client, 'PLUGIN_SPOTTYICE_NOW_PLAYING'), url => \&nowPlaying },
 	] });
 }
@@ -145,6 +147,14 @@ sub playContainer {
 	$cb->({ items => [{ name => $params->{name} || $uri, type => 'audio', url => "spottyice://$uri" }] });
 }
 
+# Text input: paste a Spotify share link or URI and play it
+sub playLink {
+	my ($client, $cb, $args) = @_;
+	my $uri = $E->can('linkToUri')->($args->{search});
+	return $cb->(_text(cstring($client, 'PLUGIN_SPOTTYICE_PLAY_LINK_INVALID'))) unless $uri;
+	$cb->({ items => [{ name => $uri, type => 'audio', url => "spottyice://$uri", on_select => 'play' }] });
+}
+
 sub browseItem {
 	my ($client, $cb, $args, $params) = @_;
 	my $uri = $params->{uri};
@@ -154,6 +164,11 @@ sub browseItem {
 		my $type = eval { $data->{item}{entity_type} } || '';
 		my $children = $data->{children};
 		my @items;
+
+		# Explicit Play entry for contexts: always available, also when Spotify
+		# refuses to list a playlist's tracks (development-mode Web API limits).
+		push @items, { name => cstring($client, 'PLUGIN_SPOTTYICE_PLAY'), type => 'audio', url => "spottyice://$uri" }
+			if $E->can('isContainer')->($data->{item});
 
 		if ($type eq 'artist' && ref $data->{top_tracks} eq 'ARRAY' && @{ $data->{top_tracks} }) {
 			my @top = grep { defined } map { $E->can('toItem')->($_, \&browseItem, \&playContainer) } @{ $data->{top_tracks} };
@@ -210,7 +225,8 @@ sub nowPlaying {
 		$API->get('/queue?limit=10', sub {
 			my $q = shift;
 			my $up = ref $q eq 'HASH' ? $q->{upcoming} : undef;
-			push @items, grep { defined } map { $E->can('toItem')->($_, \&browseItem, \&playContainer) } @{ ref $up eq 'ARRAY' ? $up : [] };
+			# QueueEntry: {uid, source, item: Entity}
+			push @items, grep { defined } map { $E->can('toItem')->(ref $_ eq 'HASH' && $_->{item} ? $_->{item} : $_, \&browseItem, \&playContainer) } @{ ref $up eq 'ARRAY' ? $up : [] };
 			$cb->({ items => \@items });
 		}, sub { $cb->({ items => \@items }) });
 	}, sub { $cb->(_text(shift)) });

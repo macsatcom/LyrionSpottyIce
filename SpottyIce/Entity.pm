@@ -45,6 +45,17 @@ sub _type { my $t = _h($_[0])->{entity_type}; defined $t ? $t : '' }
 sub isPlayable  { _type($_[0]) =~ /^(?:track|episode)$/ ? 1 : 0 }
 sub isContainer { _type($_[0]) =~ /^(?:album|playlist|artist|show)$/ ? 1 : 0 }
 
+# Spotify URI or open.spotify.com share link -> spotify:<type>:<id>; undef if not playable
+sub linkToUri {
+	my $s = shift;
+	return undef unless defined $s;
+	$s =~ s/^\s+|\s+$//g;
+	my $types = qr/track|album|playlist|artist|show|episode/;
+	return "spotify:$1:$2" if $s =~ m{^spotify:($types):([A-Za-z0-9]+)$};
+	return "spotify:$1:$2" if $s =~ m{^(?:https?://)?open\.spotify\.com/(?:intl-[a-z-]+/)?($types)/([A-Za-z0-9]+)(?:[/?#].*)?$}i;
+	return undef;
+}
+
 sub toItem {
 	my ($e, $linkCb, $playCb) = @_;
 	my $uri = _h($e)->{uri};

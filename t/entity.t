@@ -30,4 +30,9 @@ is f('toItem',{uri=>'spotify:episode:3',entity_type=>'episode',decorations=>{par
 ok !defined f('toItem',{uri=>'x',entity_type=>'ad'},$cb);
 ok !defined f('toItem',{entity_type=>'track'},$cb);
 ok !defined f('toItem',undef,$cb);
+is f('linkToUri','spotify:track:6TYQ'),'spotify:track:6TYQ';
+is f('linkToUri',' https://open.spotify.com/playlist/37i9?si=abc '),'spotify:playlist:37i9';
+is f('linkToUri','https://open.spotify.com/intl-da/artist/2yEw'),'spotify:artist:2yEw';
+is f('linkToUri','open.spotify.com/episode/0ct3'),'spotify:episode:0ct3';
+ok !defined f('linkToUri','https://example.com/album/1'); ok !defined f('linkToUri','spotify:user:x'); ok !defined f('linkToUri',undef);
 done_testing;

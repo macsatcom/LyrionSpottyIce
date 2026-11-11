@@ -150,3 +150,22 @@ PLUGIN_SPOTTYICE_NOT_CONFIGURED
 	EN	Spotty Ice is not configured – set the container URL in the plugin settings
 	DA	Spotty Ice er ikke konfigureret – angiv container-URL i plugin-indstillingerne
 
+PLUGIN_SPOTTYICE_SEARCH_EPISODES
+	EN	Episodes
+	DA	Episoder
+
+PLUGIN_SPOTTYICE_TOP_ARTISTS
+	EN	Top Artists
+	DA	Topkunstnere
+
+PLUGIN_SPOTTYICE_PLAY
+	EN	Play
+	DA	Afspil
+
+PLUGIN_SPOTTYICE_PLAY_LINK
+	EN	Play Spotify link
+	DA	Afspil Spotify-link
+
+PLUGIN_SPOTTYICE_PLAY_LINK_INVALID
+	EN	Not a Spotify link or URI (track, album, playlist, artist, show or episode)
+	DA	Ikke et Spotify-link eller -URI (nummer, album, playliste, kunstner, podcast eller episode)
